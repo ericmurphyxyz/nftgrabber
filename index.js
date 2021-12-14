@@ -2,7 +2,12 @@ const puppeteer = require("puppeteer");
 const fs = require("fs");
 const path = require("path");
 
-const url = "https://rarible.com/boredapeyachtclub";
+const url = process.argv[2];
+
+if (!url) {
+  console.log(`Please enter a URL (e.g. "npm start https://url.xyz").`);
+  return;
+}
 
 (async () => {
   console.log("Loading...");
