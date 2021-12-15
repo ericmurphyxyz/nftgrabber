@@ -11,9 +11,8 @@ if (!url) {
 
 (async () => {
   console.log("Loading...");
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
-  let currentImage = 1;
 
   await page.goto(url);
   await page.setViewport({
@@ -29,16 +28,18 @@ if (!url) {
     fs.mkdirSync(collection);
   }
 
+  let currentImage = 1;
+
   page.on("response", async (response) => {
     const imageUrl = response.url();
     if (response.request().resourceType() === "image") {
       response.buffer().then((file) => {
         if (imageUrl.includes("t_preview")) {
-          const fileName = imageUrl.split("/").pop();
-          const filePath = path.resolve(__dirname, collection, fileName + ".avif");
+          const fileName = imageUrl.split("/").pop() + ".avif";
+          const filePath = path.resolve(__dirname, collection, fileName);
           const writeStream = fs.createWriteStream(filePath);
           writeStream.write(file);
-          console.log(`${collection} #${currentImage} saved to ${collection}/${fileName}.avif`);
+          console.log(`${collection} #${currentImage} saved to ${collection}/${fileName}`);
           currentImage++;
         }
       });
@@ -59,11 +60,11 @@ if (!url) {
 
 async function autoScroll(page) {
   await page.evaluate(async () => {
-    await new Promise((resolve, reject) => {
-      var totalHeight = 0;
-      var distance = 1000;
-      var timer = setInterval(() => {
-        var scrollHeight = document.body.scrollHeight;
+    await new Promise((resolve) => {
+      let totalHeight = 0;
+      let distance = 500;
+      let timer = setInterval(() => {
+        let scrollHeight = document.body.scrollHeight;
         window.scrollBy(0, distance);
         totalHeight += distance;
 
