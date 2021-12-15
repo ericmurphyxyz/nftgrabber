@@ -5,7 +5,7 @@ const path = require("path");
 const url = process.argv[2];
 
 if (!url) {
-  console.log(`Please enter a URL (e.g. "npm start https://url.xyz").`);
+  console.log(`Please enter a URL (e.g. "npm start https://rarible.com/boredapeyachtclub").`);
   return;
 }
 
