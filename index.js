@@ -34,7 +34,7 @@ if (!url) {
     const imageUrl = response.url();
     if (response.request().resourceType() === "image") {
       response.buffer().then((file) => {
-        if (imageUrl.includes("t_preview")) {
+        if (imageUrl.includes("t_image_preview")) {
           const fileName = imageUrl.split("/").pop() + ".avif";
           const filePath = path.resolve(__dirname, collection, fileName);
           const writeStream = fs.createWriteStream(filePath);
